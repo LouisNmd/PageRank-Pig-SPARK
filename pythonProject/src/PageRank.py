@@ -32,8 +32,7 @@ params = { 'd': '0.5', 'docs_in': 'gs://pig-crawling-bucket/crawl.csv'}
 
 stats = INIT.bind(params).runSingle()
 if not stats.isSuccessful():
-    raise ‘failed
-    initialization’
+    raise 'failed initialization'
 
     for i in range(10):
         out = "out/pagerank_data_" + str(i + 1)
@@ -41,5 +40,5 @@ if not stats.isSuccessful():
         Pig.fs("rmr " + out)
         stats = P.bind(params).runSingle()
         if not stats.isSuccessful():
-            raise ‘failed’
+            raise 'failed'
             params["docs_in"] = out
