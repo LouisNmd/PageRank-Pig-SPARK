@@ -1,4 +1,5 @@
 import csv
+import math
 import random
 import os
 
@@ -32,21 +33,21 @@ def randomGenCrawl(nbURL):
     home_path = os.path.dirname(os.path.abspath(__file__))
     f = open('crawl.csv', "w")
     csv_writer = csv.writer(f, delimiter="\t")
-    percentNetwork = 0.70
+    percentNetwork = 0.90
     for i in range(nbURL):
         baseUrl = 'x' + str(i)
         targetUrl = ''
         while random.random() <= percentNetwork:
             if targetUrl == '':
-                targetUrl = '(x' + str(random.random()*nbURL) + ')'
+                targetUrl = '(x' + str(math.floor(random.random()*nbURL)) + ')'
             else:
-                targetUrl = targetUrl + ', (x' + str(random.random()*nbURL) + ')'
+                targetUrl = targetUrl + ', (x' + str(math.floor(random.random()*nbURL)) + ')'
         row = [baseUrl, 1, '{ '+targetUrl + ' }']
         csv_writer.writerow(row)
 
 
 if __name__ == "__main__":
     #goodGenCrawl(10000)
-    randomGenCrawl(10000)
+    randomGenCrawl(100000)
 
 
