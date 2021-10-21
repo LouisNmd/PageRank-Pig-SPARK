@@ -61,11 +61,22 @@ gcloud init
 ```
 
 2 - Exécuter l'algorithme de page ranking sous Pig
+```
+pig.sh <cluster_name> <bucket_name>
+```
+Le résultat est présent sous la forme du fichier **pagerank-final/pagerank-final_part-r-00000**, stocké dans le bucket **<bucket_name>** passé en paramètre.  
+Ce fichier sans extension est ouvrable à l'aide des principaux* éditeurs de texte.  
+*\*Le bloc-note de Windows ne permet pas de lire ce fichier : il est nécéssaire de passer par un logiciel tiers ou de changer l'extension à la main*
 
-2 - Exécuter l'algorithme de page ranking sous Spark
+3 - Exécuter l'algorithme de page ranking sous Spark
 Exécuter le script *spark.sh* présent à la racine de projet :
 ```
 spark.sh <cluster_name> <bucket_name>
 ```
+Le résultat est présent sous la forme du fichier **result.csv**, stocké dans le bucket **<bucket_name>** passé en paramètre.
 
----
+4 - Modifier le nombre de noeuds dans le cluster
+
+Se rendre dans l'outil **Dataproc** > **Cluster** > ***Mon_cluster*** > **Configuration** > **Modifier**  
+Faire varier le nombre de noeuds en modifiant le champs **Noeuds de calcul**
+
