@@ -39,7 +39,5 @@ def randomGenCrawl(nbURL):
 
 
 if __name__ == "__main__":
-    goodGenCrawl(1000)
+    goodGenCrawl(100)
     # randomGenCrawl(100000)
-
-
