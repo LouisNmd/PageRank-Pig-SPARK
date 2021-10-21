@@ -1,5 +1,9 @@
 #!/usr/bin/python
+import sys
+
 from org.apache.pig.scripting import *
+
+bucket_name = sys.argv[1]
 
 PREPARE = Pig.compile("""
 load_pagerank_tab =
@@ -65,16 +69,16 @@ STORE ordered_pagerank
 
 """)
 
-paramsPrepare = {'first_doc': 'gs://pig-crawling-bucket/crawl.csv',
-                 'docs_in': 'gs://pig-crawling-bucket/crawlParsed.txt'}
-params = {'d': '0.85', 'docs_in': 'gs://pig-crawling-bucket/crawlParsed.txt',
-          'docs_out': 'gs://pig-crawling-bucket/pagerank.txt'}
+paramsPrepare = {'first_doc': 'gs://'+bucket_name+'/crawl.csv',
+                 'docs_in': 'gs://'+bucket_name+'/crawlParsed.txt'}
+params = {'d': '0.85', 'docs_in': 'gs://'+bucket_name+'/crawlParsed.txt',
+          'docs_out': 'gs://'+bucket_name+'/pagerank.txt'}
 
-paramsFinal = {'docs_in': 'gs://pig-crawling-bucket/pagerank-9', 'docs_out': 'gs://pig-crawling-bucket/pagerank-final'}
+paramsFinal = {'docs_in': 'gs://'+bucket_name+'/pagerank-9', 'docs_out': 'gs://'+bucket_name+'/pagerank-final'}
 
 stats = PREPARE.bind(paramsPrepare).runSingle()
 for i in range(10):
-    out = 'gs://pig-crawling-bucket/pagerank-' + str(i)
+    out = 'gs://'+bucket_name+'/pagerank-' + str(i)
     params["docs_out"] = out
     stats = P.bind(params).runSingle()
     if not stats.isSuccessful():
@@ -82,3 +86,4 @@ for i in range(10):
     params["docs_in"] = out
 
 stats = FINAL.bind(paramsFinal).runSingle()
+

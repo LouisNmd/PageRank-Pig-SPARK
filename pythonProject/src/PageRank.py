@@ -1,6 +1,5 @@
 #!/usr/bin/python
 from org.apache.pig.scripting import *
-
 P = Pig.compile("""
 previous_pagerank =
     LOAD '$docs_in'
@@ -25,10 +24,9 @@ STORE new_pagerank
     INTO '$docs_out';
 """)
 
-params = {'d': '0.5', 'docs_in': 'gs://pig-crawling-bucket/crawl.csv',
-          'docs_out': 'gs://pig-crawling-bucket/pagerank.txt'}
+params = { 'd': '0.5', 'docs_in': 'gs://pig-crawling-bucket/crawl.csv', 'docs_out': 'gs://pig-crawling-bucket/pagerank.txt'}
 for i in range(10):
-    out = 'gs://pig-crawling-bucket/pagerank-' + str(i)
+    out =  'gs://pig-crawling-bucket/pagerank-' + str(i)
     params["docs_out"] = out
     stats = P.bind(params).runSingle()
     if not stats.isSuccessful():
