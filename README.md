@@ -4,45 +4,67 @@ L'étude compare le temps d'exécution d'un algorithme de page ranking en foncti
 * Du nombre de machine dans le cluster
 * Du langage utilisé (Pig/Spark)
 
+## Page ranking
+![unknown](https://user-images.githubusercontent.com/56700560/138350960-7101a83c-8b5c-45b1-94ac-76b5c3c54815.png)
+
+<table>
+    <caption>Tableau comparatif du temps d'exécution de l'algorithme de page ranking</caption>
+    <tr>
+        <th scope="col">Nombre de noeuds</th>
+        <th scope="col">Temps d'exécution pour Pig</th>
+        <th scope="col">Temps d'exécution pour Spark</th>
+        <th scope="col">Gain de vitesse d'une exécution sous Spark par rapport à Pig</th>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>44m 22s</td>
+        <td>18m 41s</td>
+        <td>+57.9%</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>40m 47s</td>
+        <td>14m 28s</td>
+        <td>+64.6%</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>39m 37s</td>
+        <td>+64.3</td>
+    </tr>
+</table>
+
+Nous n'avons pas la possibilité de tester avec un plus grand nombre de noeuds à cause du quota de CPU allouable par compte : nous sommes limité à 26 CPU, soit 5 noeuds + 1 noeud maître de 4 processeurs chacun (24 CPU au total).  
+Il est cependant possible de demander une augmentation du quota de CPU ou diminuer le nombre de processeur par noeud (et ainsi donc augmenter la taille du cluster). 
+
 ---
-## Page ranking à l'aide de *PIG*
+## Mise en place de l'expérience
 
+#### Prérequis
+
+- un fichier de crawling (peut-être généré grâce au script *.\pythonProject\src\main.py* ou récupéré sur Internet)
+- le gcloud SDK sur la machine locale
+- un environnement local sous Linux
+
+1 - Mise en place de l'environnement d'exécution
+
+Créer un nouveau projet gcp  
+Se rendre dans l'outil **Dataproc** > **Cluster**   
+Créer un cluster de 2 noeuds (à modifier plus tard pour varier les noeuds)  
+Se rendre dans l'outil **Cloud Storage**  
+Créer un nouveau bucket  
+
+Déclarer votre nouveau projet comme celui utilisé :   
+```
+gcloud init
+```
+
+2 - Exécuter l'algorithme de page ranking sous Pig
+
+2 - Exécuter l'algorithme de page ranking sous Spark
+Exécuter le script *spark.sh* présent à la racine de projet :
+```
+spark.sh <cluster_name> <bucket_name>
+```
 
 ---
-
----
-## Génération et ajout d'un fichier de crawling
-
-Pour commencer le calcul du PageRank nous avons besoin d'un fichier de crawling celui-ci va regrouper tous les url contenu dans une page web et parcourir ces urls et jusqu'où nous permettent d'aller ces liens.
-Cela nous permettra ensuite de calculer grâce au PageRank la probabilité qu'on arrive sur notre page de départ.
-
-Pour récupérer un fichier de crawling plusieurs solutions sont disponibles :
-- Via des ressources en lignes comme "Common crawl".
-
-- Via des logiciel dit des crawlers qui vont générer le fichier en partant d'une url donnée en entrée.
-
-- Via des algorithmes que l'on implémente nous-mêmes qui vont généré des url fictifs avec des liens entre les urls. cette solution à l'avantage que l'on peut facilement gérer la taille du fichier de sortie que l'on veut obtenir.
-
-Nous avons décidé d'utiliser la troisième solution.
-
-Pour faire cela nous avons utilser le main.py de ce repository dans le dossier /python-project/src puis pour choisir le nombre d'url parcourus, à la fin du fichier lors de l'appel à la fonction goodgencrawl on modifie la valeur du paramètre, 100 si on veut parcourir 100 urls par exemple.
-
-Après avoir donnée la valeur que l'on veut au paramètre de la fonction goodGenCrawl (15 000 pour un fichier de 1Go), on lance le fichier main.py. Pour se faire, via un terminal on se rend dans le dossier où le fichier est stocké et on l'exécute avec la commande "python main.py" ou "python3 main.py" (le compilateur python doit être installé). Suite à cela un fichier crawl.csv a été crée dans le dossier.
-
-Pour ajouter et exploiter le fichier que l'on a généré, sur google cloud platform on crée un nouveau projet puis l'on se rend dans "cloud storage" ensuite on crée un bucket et l'on importe le fichier généré dans le bucket créé.
-
----
-
-
-On doit voir:
-
-- plus de noeuds dans le cluster -> plus rapide mais de combien ??
-
-- Spark plus rapide que PIG
-
-- Exec automatique  : Bash/Python/SnakeMake (comme vous voulez...)
-
-- rendu sous forme d'un repo github (ou assimilé)  + Readme (par example : https://github.com/sage-org/sage-property-paths-experiments)
-
-
-- VOTRE EXP doit ETRE REPETABLE !!
