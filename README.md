@@ -30,7 +30,8 @@ L'étude compare le temps d'exécution d'un algorithme de page ranking en foncti
     <tr>
         <td>5</td>
         <td>39m 37s</td>
-        <td>+64.3</td>
+        <td>14m 08s</td>
+        <td>+64.3%</td>
     </tr>
 </table>
 
