@@ -5,28 +5,20 @@ import os
 
 
 def goodGenCrawl(nbURL):
-    home_path = os.path.dirname(os.path.abspath(__file__))
     f = open('crawl.csv', "w")
     csv_writer = csv.writer(f, delimiter="\t")
     percentNetwork = 0.70
     probDiffPerLoop = percentNetwork / nbURL
-    tabTargetUrl = [''] * nbURL
-    for i in range(len(tabTargetUrl)):
+    for i in range(nbURL):
+        baseUrl = 'x'+ str(i)
         percentNetwork = 0.70
-        for j in range(len(tabTargetUrl)):
-            temp = random.random()
-            if temp <= percentNetwork:
-                if tabTargetUrl[i] == '':
-                    tabTargetUrl[i] = '(x' + str(j) + ')'
-                else:
-                    tabTargetUrl[i] = tabTargetUrl[i] + ', (x' + str(j) + ')'
+        for j in range(nbURL):
+            if random.random() <= percentNetwork:
+                targetUrl = 'x'+ str(j)
+                row = [baseUrl, targetUrl]
+                csv_writer.writerow(row)
             percentNetwork -= probDiffPerLoop
 
-    for i in range(len(tabTargetUrl)):
-        baseUrl = 'x' + str(i)
-        targetUrl = '{ ' + tabTargetUrl[i] + ' }'
-        row = [baseUrl, 1, targetUrl]
-        csv_writer.writerow(row)
 
 
 def randomGenCrawl(nbURL):
@@ -47,7 +39,7 @@ def randomGenCrawl(nbURL):
 
 
 if __name__ == "__main__":
-    #goodGenCrawl(10000)
-    randomGenCrawl(100000)
+    goodGenCrawl(1000)
+    # randomGenCrawl(100000)
 
 
