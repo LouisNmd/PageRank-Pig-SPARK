@@ -1,3 +1,14 @@
+# Etude comparative du temps d'exécution d'un algorithme de Page Ranking 
+
+L'étude compare le temps d'exécution d'un algorithme de page ranking en fonction :
+* Du nombre de machine dans le cluster
+* Du langage utilisé (Pig/Spark)
+
+---
+## Page ranking à l'aide de *PIG*
+
+
+---
 On doit voir:
 
 - plus de noeuds dans le cluster -> plus rapide mais de combien ??
