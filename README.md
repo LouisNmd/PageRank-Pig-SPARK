@@ -43,8 +43,9 @@ Il est cependant possible de demander une augmentation du quota de CPU ou diminu
 
 #### Prérequis
 
-- un fichier de crawling (peut-être généré grâce au script *.\pythonProject\src\main.py* ou récupéré sur Internet)
+- un fichier de crawling (peut-être généré grâce au script *generateCrawl.sh* ou récupéré sur Internet)
 - le gcloud SDK sur la machine locale
+- python3 sur la machine locale (si on souhaite générer un crawl)
 - un environnement local sous Linux
 
 1 - Mise en place de l'environnement d'exécution
