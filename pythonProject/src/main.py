@@ -36,19 +36,17 @@ def randomGenCrawl(nbURL):
     for i in range(nbURL):
         baseUrl = 'x' + str(i)
         targetUrl = ''
-        for j in range(nbURL):
-            temp = random.random()
-            if temp <= percentNetwork:
-                if targetUrl == '':
-                    targetUrl = '(x' + str(j) + ')'
-                else:
-                    targetUrl = targetUrl + ', (x' + str(j) + ')'
+        while random.random() <= percentNetwork:
+            if targetUrl == '':
+                targetUrl = '(x' + str(random.random()*nbURL) + ')'
+            else:
+                targetUrl = targetUrl + ', (x' + str(random.random()*nbURL) + ')'
         row = [baseUrl, 1, '{ '+targetUrl + ' }']
         csv_writer.writerow(row)
 
 
 if __name__ == "__main__":
-    goodGenCrawl(10000)
-    #randomGenCrawl(10000)
+    #goodGenCrawl(10000)
+    randomGenCrawl(10000)
 
 
