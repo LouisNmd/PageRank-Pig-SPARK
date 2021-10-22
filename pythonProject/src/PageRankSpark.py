@@ -24,16 +24,17 @@ bin/spark-submit examples/src/main/python/pagerank.py data/mllib/pagerank_data.t
 """
 import re
 import sys
-import csv
 from operator import add
 from pyspark.sql import SparkSession
 from google.cloud import storage
 
+
 def create_file(filename, content):
     client = storage.Client()
-    bucket = client.get_bucket('pig-crawling-bucket')
+    bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(filename)
     blob.upload_from_string(content)
+
 
 def computeContribs(urls, rank):
     """Calculates URL contributions to the rank of other URLs."""
@@ -50,7 +51,7 @@ def parseNeighbors(urls):
 
 if __name__ == "__main__":
 
-    bucket_name = "pig-crawling-bucket"#sys.argv[1].rsplit('/', 1)[0][2:len(sys.argv[1].rsplit('/', 1)[0])]
+    bucket_name = sys.argv[1].rsplit('/', 1)[0][5:len(sys.argv[1].rsplit('/', 1)[0])]
 
     print("WARN: This is a naive implementation of PageRank and is given as an example!\n" +
           "Please refer to PageRank implementation provided by graphx",
@@ -67,7 +68,7 @@ if __name__ == "__main__":
     #     URL         neighbor URL
     #     URL         neighbor URL
     #     ...
-    lines = spark.read.text("gs://pig-crawling-bucket/crawl.csv").rdd.map(lambda r: r[0])
+    lines = spark.read.text("gs://" + bucket_name + "/crawl.csv").rdd.map(lambda r: r[0])
 
     # Loads all URLs from input file and initialize their neighbors.
     links = lines.map(lambda urls: parseNeighbors(urls)).distinct().groupByKey().cache()
@@ -94,6 +95,6 @@ if __name__ == "__main__":
     content = ""
 
     for element in tabRes:
-        #print([element[0], element[1]])
-        content = content + str(element[0]) + "," + str(element[1]) +"\n"
+        # print([element[0], element[1]])
+        content = content + str(element[0]) + "," + str(element[1]) + "\n"
     create_file("result.csv", content)

@@ -2,6 +2,7 @@ import csv
 import math
 import random
 import os
+import sys
 
 
 def goodGenCrawl(nbURL):
@@ -38,5 +39,5 @@ def randomGenCrawl(nbURL):
 
 
 if __name__ == "__main__":
-    goodGenCrawl(150)
+    goodGenCrawl(int(sys.argv[1]))
     # randomGenCrawl(100000)

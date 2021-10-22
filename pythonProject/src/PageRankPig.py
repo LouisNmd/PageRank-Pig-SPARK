@@ -3,7 +3,8 @@ import sys
 
 from org.apache.pig.scripting import *
 
-bucket_name = sys.argv[1]
+# A remplir a la main puisque gcloud submit pig job ne permet pas d'ajouter d'arguments supplementaires
+bucket_name = "crawlingbucket123"
 
 PREPARE = Pig.compile("""
 load_pagerank_tab =
@@ -69,16 +70,17 @@ STORE ordered_pagerank
 
 """)
 
-paramsPrepare = {'first_doc': 'gs://'+bucket_name+'/crawl.csv',
-                 'docs_in': 'gs://'+bucket_name+'/crawlParsed.txt'}
-params = {'d': '0.85', 'docs_in': 'gs://'+bucket_name+'/crawlParsed.txt',
-          'docs_out': 'gs://'+bucket_name+'/pagerank.txt'}
+paramsPrepare = {'first_doc': 'gs://' + bucket_name + '/crawl.csv',
+                 'docs_in': 'gs://' + bucket_name + '/crawlParsed.txt'}
+params = {'d': '0.85', 'docs_in': 'gs://' + bucket_name + '/crawlParsed.txt',
+          'docs_out': 'gs://' + bucket_name + '/pagerank.txt'}
 
-paramsFinal = {'docs_in': 'gs://'+bucket_name+'/pagerank-9', 'docs_out': 'gs://'+bucket_name+'/pagerank-final'}
+paramsFinal = {'docs_in': 'gs://' + bucket_name + '/pagerank-9',
+               'docs_out': 'gs://' + bucket_name + '/pagerank-final'}
 
 stats = PREPARE.bind(paramsPrepare).runSingle()
 for i in range(10):
-    out = 'gs://'+bucket_name+'/pagerank-' + str(i)
+    out = 'gs://' + bucket_name + '/pagerank-' + str(i)
     params["docs_out"] = out
     stats = P.bind(params).runSingle()
     if not stats.isSuccessful():
@@ -86,4 +88,3 @@ for i in range(10):
     params["docs_in"] = out
 
 stats = FINAL.bind(paramsFinal).runSingle()
-
