@@ -43,7 +43,7 @@ Il est cependant possible de demander une augmentation du quota de CPU ou diminu
 
 #### Prérequis
 
-- un fichier de crawling (peut-être généré grâce au script *generateCrawl.sh* ou récupéré sur Internet)
+- un fichier de crawling (peut-être généré grâce à la commande ```sh generateCrawl.sh <nombre d'url>``` ou récupéré sur Internet)
 - le gcloud SDK sur la machine locale
 - python3 sur la machine locale (si on souhaite générer un crawl)
 - un environnement local sous Linux
@@ -65,8 +65,11 @@ gcloud init
 
 Exécuter le script *pig.sh* présent à la racine de projet :
 ```
-sh pig.sh <cluster_name> <bucket_name>
+sh pig.sh <cluster_name> 
 ```
+**Attention**: Il faut changer le nom du bucket cloud storage dans le fichier dans le fichier: ```pythonProject/src/PageRankPig.py```  
+En effet,  ```gcloud submit pig job``` ne permet pas d'ajouter des arguments à notre fichier python.
+
 Le résultat est présent sous la forme du fichier **pagerank-final/pagerank-final_part-r-00000**, stocké dans le bucket **<bucket_name>** passé en paramètre.  
 Ce fichier sans extension est ouvrable à l'aide des principaux* éditeurs de texte.  
 *\*Le bloc-note de Windows ne permet pas de lire ce fichier : il est nécéssaire de passer par un logiciel tiers ou de changer l'extension à la main*
