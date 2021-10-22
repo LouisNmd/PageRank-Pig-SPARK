@@ -1,5 +1,7 @@
 # Etude comparative du temps d'exécution d'un algorithme de Page Ranking 
 
+Travail réalisé par NORMAND Louis, COLIN Thibault, TENAUD Raphaël
+
 L'étude compare le temps d'exécution d'un algorithme de page ranking en fonction :
 * Du nombre de machine dans le cluster
 * Du langage utilisé (Pig/Spark)
@@ -86,4 +88,17 @@ Le résultat est présent sous la forme du fichier **result.csv**, stocké dans 
 
 Se rendre dans l'outil **Dataproc** > **Cluster** > ***Mon_cluster*** > **Configuration** > **Modifier**  
 Faire varier le nombre de noeuds en modifiant le champs **Noeuds de calcul**
+
+5 - Le code
+
+Le code de génération de crawl génére des url sous forme "x[0-9]\*", le nombre d'url nécessaire en paramètre pour atteindre 1 Go est environ 15000.
+Cette génération donne une probabilité de lien vers les premières URLs de 70%, cette probabilité baisse linéairement jusqu'à 0 pour les dernières URLs.  
+La génération est sous forme: ```x0 x1``` par ligne.
+
+Le code du pig a été trouvé sur [internet](https://github.com/julienledem/Pig-scripting-examples/tree/master/Page%20Rank) et remanié car il prend des instances sous forme:   
+```xO 1 {(x1), (x2), (x3)....}``` par ligne.
+
+Le code du spark a été trouvé aussi sur [internet](https://github.com/apache/spark/blob/master/examples/src/main/python/pagerank.py).
+
+Ces deux algorithmes sont modifiés pour être utilisé avec le Dataproc Google.
 
